@@ -1,0 +1,9 @@
+@page
+@attribute [Microsoft.AspNetCore.Authorization.Authorize]
+@model AuthX.Pages.DashboardModel
+
+<h2>Dashboard</h2>
+<p>Bine ai venit, @User.Identity?.Name</p>
+<form method="post" asp-page="/Logout">
+    <button type="submit">Logout</button>
+</form>
