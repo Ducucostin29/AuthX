@@ -48,17 +48,16 @@ public class LoginModel : PageModel
 
         if (user == null)
         {
-            Message = "Invalid credentials";
+            Message = "User does not exist";
             return Page();
         }
 
-        var valid = _passwordService.VerifyPassword(user, Input.Password);
-
-        if (!valid)
+        if (!_passwordService.VerifyPassword(user, Input.Password))
         {
-            Message = "Invalid credentials";
+            Message = "Wrong password";
             return Page();
         }
+        var valid = _passwordService.VerifyPassword(user, Input.Password);
 
         var claims = new List<Claim>
         {

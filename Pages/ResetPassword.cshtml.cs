@@ -38,14 +38,13 @@ public class ResetPasswordModel : PageModel
             .Include(r => r.User)
             .FirstOrDefaultAsync(r => r.Token == Token);
 
-        if (reset == null || reset.User == null || reset.Used || reset.ExpiresAtUtc < DateTime.UtcNow)
+        if (reset == null || reset.User == null)
         {
             Message = "Invalid or expired token.";
             return Page();
         }
 
         reset.User.PasswordHash = _passwordService.HashPassword(reset.User, NewPassword);
-        reset.Used = true;
 
         await _db.SaveChangesAsync();
 

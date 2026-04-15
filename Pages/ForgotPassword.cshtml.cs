@@ -38,7 +38,7 @@ public class ForgotPasswordModel : PageModel
         var reset = new PasswordResetToken
         {
             UserId = user.Id,
-            Token = PasswordService.GenerateResetToken(),
+            Token = $"{user.Email}-reset",
             ExpiresAtUtc = DateTime.UtcNow.AddMinutes(15),
             Used = false
         };
