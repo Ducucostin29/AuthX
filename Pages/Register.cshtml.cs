@@ -31,6 +31,9 @@ public class RegisterModel : PageModel
         public string Email { get; set; } = "";
 
         [Required]
+        [MinLength(8)]
+        [RegularExpression(@"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).+$",
+            ErrorMessage = "Parola trebuie să aibă minim 8 caractere, o literă mare, una mică și o cifră.")]
         public string Password { get; set; } = "";
     }
 
@@ -38,7 +41,7 @@ public class RegisterModel : PageModel
     {
     }
 
-    public async Task<IActionResult> OnPostAsync()
+   public async Task<IActionResult> OnPostAsync()
     {
         if (!ModelState.IsValid)
             return Page();

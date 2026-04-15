@@ -34,17 +34,21 @@ public class ResetPasswordModel : PageModel
 
     public async Task<IActionResult> OnPostAsync()
     {
+        if (!ModelState.IsValid)
+            return Page();
+
         var reset = await _db.PasswordResetTokens
             .Include(r => r.User)
             .FirstOrDefaultAsync(r => r.Token == Token);
 
-        if (reset == null || reset.User == null)
+        if (reset == null || reset.User == null || reset.Used || reset.ExpiresAtUtc < DateTime.UtcNow)
         {
             Message = "Invalid or expired token.";
             return Page();
         }
 
         reset.User.PasswordHash = _passwordService.HashPassword(reset.User, NewPassword);
+        reset.Used = true;
 
         await _db.SaveChangesAsync();
 

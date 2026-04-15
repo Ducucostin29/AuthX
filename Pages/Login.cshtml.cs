@@ -48,16 +48,37 @@ public class LoginModel : PageModel
 
         if (user == null)
         {
-            Message = "User does not exist";
+            Message = "Invalid credentials";
             return Page();
         }
 
-        if (!_passwordService.VerifyPassword(user, Input.Password))
+        if (user.LockUntilUtc.HasValue && user.LockUntilUtc > DateTime.UtcNow)
         {
-            Message = "Wrong password";
+            Message = "Account temporarily locked. Try again later.";
             return Page();
         }
+
         var valid = _passwordService.VerifyPassword(user, Input.Password);
+
+        if (!valid)
+        {
+            user.FailedLoginAttempts++;
+
+            if (user.FailedLoginAttempts >= 5)
+            {
+                user.LockUntilUtc = DateTime.UtcNow.AddMinutes(10);
+                user.FailedLoginAttempts = 0;
+            }
+
+            await _db.SaveChangesAsync();
+
+            Message = "Invalid credentials";
+            return Page();
+        }
+
+        user.FailedLoginAttempts = 0;
+        user.LockUntilUtc = null;
+        await _db.SaveChangesAsync();
 
         var claims = new List<Claim>
         {
@@ -71,7 +92,12 @@ public class LoginModel : PageModel
 
         await HttpContext.SignInAsync(
             CookieAuthenticationDefaults.AuthenticationScheme,
-            principal);
+            principal,
+            new AuthenticationProperties
+            {
+                IsPersistent = true,
+                ExpiresUtc = DateTimeOffset.UtcNow.AddMinutes(30)
+            });
 
         return RedirectToPage("/Dashboard");
     }

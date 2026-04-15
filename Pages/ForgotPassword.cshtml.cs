@@ -35,10 +35,12 @@ public class ForgotPasswordModel : PageModel
         if (user == null)
             return Page();
 
+        var token = PasswordService.GenerateResetToken();
+
         var reset = new PasswordResetToken
         {
             UserId = user.Id,
-            Token = $"{user.Email}-reset",
+            Token = token,
             ExpiresAtUtc = DateTime.UtcNow.AddMinutes(15),
             Used = false
         };
@@ -46,7 +48,7 @@ public class ForgotPasswordModel : PageModel
         _db.PasswordResetTokens.Add(reset);
         await _db.SaveChangesAsync();
 
-        GeneratedToken = reset.Token;
+        GeneratedToken = token;
         return Page();
     }
 }

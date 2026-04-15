@@ -115,3 +115,4 @@
 /home/ducu/AuthX/obj/Debug/net8.0/AuthX.pdb
 /home/ducu/AuthX/obj/Debug/net8.0/AuthX.genruntimeconfig.cache
 /home/ducu/AuthX/obj/Debug/net8.0/ref/AuthX.dll
+/home/ducu/AuthX/obj/Debug/net8.0/AuthX.sourcelink.json
