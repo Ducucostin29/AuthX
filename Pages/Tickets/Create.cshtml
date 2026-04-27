@@ -1,0 +1,29 @@
+@page
+@model AuthX.Pages.Tickets.CreateModel
+
+<h2>Create Ticket</h2>
+
+<form method="post">
+    <div class="mb-3">
+        <label asp-for="Ticket.Title" class="form-label"></label>
+        <input asp-for="Ticket.Title" class="form-control" />
+        <span asp-validation-for="Ticket.Title" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Ticket.Description" class="form-label"></label>
+        <textarea asp-for="Ticket.Description" class="form-control"></textarea>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Ticket.Severity" class="form-label"></label>
+        <select asp-for="Ticket.Severity" class="form-control">
+            <option value="LOW">LOW</option>
+            <option value="MED">MED</option>
+            <option value="HIGH">HIGH</option>
+        </select>
+    </div>
+
+    <button type="submit" class="btn btn-success">Save</button>
+    <a asp-page="/Tickets/Index" class="btn btn-secondary">Back</a>
+</form>

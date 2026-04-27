@@ -10,10 +10,12 @@ namespace AuthX.Pages;
 public class ForgotPasswordModel : PageModel
 {
     private readonly AppDbContext _db;
+    private readonly AuditService _audit;
 
-    public ForgotPasswordModel(AppDbContext db)
+    public ForgotPasswordModel(AppDbContext db, AuditService audit)
     {
         _db = db;
+        _audit = audit;
     }
 
     [BindProperty]
@@ -30,10 +32,13 @@ public class ForgotPasswordModel : PageModel
     {
         var user = await _db.Users.FirstOrDefaultAsync(u => u.Email == Email);
 
-        Message = "If the account exists, a reset token was generated.";
+        Message = "If the account exists, a reset link was generated.";
 
         if (user == null)
+        {
+            await _audit.LogAsync("PASSWORD_RESET_REQUEST_UNKNOWN_EMAIL", "auth", null, null);
             return Page();
+        }
 
         var token = PasswordService.GenerateResetToken();
 
@@ -48,7 +53,16 @@ public class ForgotPasswordModel : PageModel
         _db.PasswordResetTokens.Add(reset);
         await _db.SaveChangesAsync();
 
-        GeneratedToken = token;
+        await _audit.LogAsync("PASSWORD_RESET_REQUEST", "auth", null, user.Id.ToString());
+
+
+        GeneratedToken = Url.Page(
+            "/ResetPassword",
+            null,
+            new { token = token },
+            Request.Scheme
+        ) ?? token;
+
         return Page();
     }
 }

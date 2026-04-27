@@ -12,11 +12,13 @@ public class RegisterModel : PageModel
 {
     private readonly AppDbContext _db;
     private readonly PasswordService _passwordService;
+    private readonly AuditService _audit;
 
-    public RegisterModel(AppDbContext db, PasswordService passwordService)
+    public RegisterModel(AppDbContext db, PasswordService passwordService, AuditService audit)
     {
         _db = db;
         _passwordService = passwordService;
+        _audit = audit;
     }
 
     [BindProperty]
@@ -41,7 +43,7 @@ public class RegisterModel : PageModel
     {
     }
 
-   public async Task<IActionResult> OnPostAsync()
+    public async Task<IActionResult> OnPostAsync()
     {
         if (!ModelState.IsValid)
             return Page();
@@ -50,6 +52,7 @@ public class RegisterModel : PageModel
 
         if (exists)
         {
+            await _audit.LogAsync("REGISTER_FAILED_EMAIL_EXISTS", "auth", null, null);
             Message = "User already exists.";
             return Page();
         }
@@ -64,6 +67,8 @@ public class RegisterModel : PageModel
 
         _db.Users.Add(user);
         await _db.SaveChangesAsync();
+
+        await _audit.LogAsync("REGISTER_SUCCESS", "auth", null, user.Id.ToString());
 
         Message = "Account created successfully.";
         return Page();

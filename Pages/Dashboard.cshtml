@@ -2,8 +2,31 @@
 @attribute [Microsoft.AspNetCore.Authorization.Authorize]
 @model AuthX.Pages.DashboardModel
 
-<h2>Dashboard</h2>
-<p>Bine ai venit, @User.Identity?.Name</p>
-<form method="post" asp-page="/Logout">
-    <button type="submit">Logout</button>
-</form>
+<div class="container">
+    <h2 class="mb-4">Dashboard</h2>
+
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card p-4">
+                <h5>Welcome</h5>
+                <p class="mb-0">Logged in as:</p>
+                <strong>@User.Identity?.Name</strong>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="card p-4">
+                <h5>Quick Actions</h5>
+                <a asp-page="/Tickets/Index" class="btn btn-outline-primary mt-2">
+                    View Tickets
+                </a>
+
+                <form method="post" asp-page="/Logout" class="mt-3">
+                    <button type="submit" class="btn btn-outline-danger">
+                        Logout
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
