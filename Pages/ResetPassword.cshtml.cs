@@ -30,7 +30,7 @@ public class ResetPasswordModel : PageModel
 
     public string Message { get; set; } = string.Empty;
 
-    // 🔥 FIX IMPORTANT
+    
     public void OnGet(string? token)
     {
         if (!string.IsNullOrWhiteSpace(token))
