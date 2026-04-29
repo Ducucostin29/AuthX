@@ -89,15 +89,8 @@ The application uses PostgreSQL with the following main tables:
 git clone <repository_url>
 cd AuthX
 ```
-### 2. Configure database
 
-```bash
-"ConnectionStrings": {
-  "DefaultConnection": "Host=localhost;Port=5432;Database=authx_db;Username=authx_user;Password=1234"
-}
-```
-
-### 3. Apply migrations
+### 2. Apply migrations
 
 ```bash
 dotnet ef database update
@@ -107,7 +100,7 @@ dotnet ef database update
 Make sure PostgreSQL is running before starting the application.
 ```
 
-### 4. Run the application
+### 3. Run the application
 
 ```bash
 dotnet run
