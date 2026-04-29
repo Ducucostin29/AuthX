@@ -88,3 +88,13 @@ The application uses PostgreSQL with the following main tables:
 ```bash
 git clone <repository_url>
 cd AuthX
+```
+
+## How to Run the Project
+
+### 1. Clone the repository
+
+```bash
+git clone <repository_url>
+cd AuthX
+```
