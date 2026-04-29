@@ -1,6 +1,6 @@
 # AuthX – Secure Authentication System
 
-## 📌 Description
+##  Description
 This project implements a secure authentication system using ASP.NET Core Razor Pages.
 
 Features:
@@ -14,7 +14,7 @@ Features:
 
 ---
 
-## ⚙️ Technologies
+##  Technologies
 - ASP.NET Core Razor Pages
 - Entity Framework Core
 - PostgreSQL
@@ -22,7 +22,7 @@ Features:
 
 ---
 
-## 🔐 Security Features
+##  Security Features
 
 ### 1. Password Security
 - Passwords are hashed using ASP.NET Identity PasswordHasher
@@ -56,7 +56,7 @@ Actions stored in database:
 
 ---
 
-## 🚀 How to run
+##  How to run
 
 ```bash
 git clone <repo>
