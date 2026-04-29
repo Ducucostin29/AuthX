@@ -1,65 +1,90 @@
 # AuthX – Secure Authentication System
 
-##  Description
-This project implements a secure authentication system using ASP.NET Core Razor Pages.
+## Description
 
-Features:
-- Register / Login / Logout
-- Password hashing
-- Rate limiting (IP-based)
-- Account lockout after failed logins
-- Password reset with secure tokens
-- Ticketing system
-- Audit logging
+This project implements a secure web authentication system using ASP.NET Core Razor Pages. It includes user authentication, password reset functionality, a ticketing system, and audit logging. The application is designed with security best practices in mind and demonstrates protection against common web vulnerabilities.
 
 ---
 
-##  Technologies
+## Technologies Used
+
 - ASP.NET Core Razor Pages
 - Entity Framework Core
 - PostgreSQL
 - Bootstrap
+- .NET 7/8
 
 ---
 
-##  Security Features
+## Features
 
-### 1. Password Security
-- Passwords are hashed using ASP.NET Identity PasswordHasher
-- Strong password policy enforced
+### Authentication
+- User registration
+- Login and logout
+- Password hashing using ASP.NET Identity PasswordHasher
+- Secure session management using cookies
 
-### 2. Authentication Protection
-- Generic error messages (prevents user enumeration)
-- Session cookies secured (HttpOnly, SameSite, Secure)
+### Security Mechanisms
+- Generic error messages to prevent user enumeration
+- Rate limiting based on IP address
+- Account lockout after multiple failed login attempts (5 attempts, 2 minutes lock)
+- Secure cookies (HttpOnly, SameSite, Secure)
 
-### 3. Brute Force Protection
-- Account locked after 5 failed attempts
-- Lock duration: 2 minutes
-- IP-based rate limiting
-
-### 4. Password Reset
-- Secure random tokens
-- Expiration (15 minutes)
+### Password Reset
+- Secure token generation
+- Token expiration (15 minutes)
 - One-time use tokens
+- Token validation on reset
 
-### 5. Authorization
-- Users can only access their own tickets
-- Unauthorized access returns NotFound
+### Ticketing System
+- Users can create and view tickets
+- Each user can only access their own tickets
+- Protection against unauthorized access (IDOR)
 
-### 6. Audit Logging
-Actions stored in database:
-- LOGIN_SUCCESS / LOGIN_FAILED
-- ACCOUNT_LOCKED
-- PASSWORD_RESET
-- LOGOUT
-- TICKET actions
+### Audit Logging
+The system logs important actions in the database:
+- Login success and failure
+- Account lock events
+- Password reset requests and completions
+- Logout actions
+- Ticket creation and access attempts
 
 ---
 
-##  How to run
+## Project Structure
+
+- Pages/
+  - Authentication pages (Login, Register, Logout, ForgotPassword, ResetPassword)
+  - Dashboard
+  - Tickets (Index, Create, Details)
+  - AuditLogs
+- Models/
+  - User
+  - Ticket
+  - PasswordResetToken
+  - AuditLog
+- Services/
+  - PasswordService
+  - AuditService
+- Data/
+  - AppDbContext
+
+---
+
+## Database
+
+The application uses PostgreSQL with the following main tables:
+- Users
+- Tickets
+- AuditLogs
+- PasswordResetTokens
+
+---
+
+## How to Run the Project
+
+### 1. Clone the repository
 
 ```bash
-git clone <repo>
+git clone <repository_url>
 cd AuthX
-dotnet ef database update
-dotnet run
