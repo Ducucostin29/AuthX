@@ -71,6 +71,10 @@ The system logs important actions in the database:
 
 ---
 
+###Videoclip
+
+Link videoclip https://www.youtube.com/watch?v=23dXRp1gDuU
+
 ## Database
 
 The application uses PostgreSQL with the following main tables:
